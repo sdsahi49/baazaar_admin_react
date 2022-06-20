@@ -199,7 +199,7 @@ return(
 													<div className="d-flex justify-content-end">		
 														<button type="reset" data-kt-contacts-type="cancel" className="btn btn-light me-3">Cancel</button>	
 														<button type="submit" data-kt-contacts-type="submit" className="btn btn-primary">Save</button>
-															{/* <span className="indicator-label">Save</span> */}
+															
 														
 
 													</div>										
