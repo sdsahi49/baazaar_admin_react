@@ -1,0 +1,66 @@
+.td_set {
+    word-break: break-all;
+    
+}
+
+.order_container1 {
+    border-style: solid;
+    height: auto;
+    width: 100%;
+    word-break: break-all;
+ 
+    
+}
+
+.order_header1 {
+    text-align: left;
+    background-color: green;
+    color: white;
+    height: 30px;
+}
+.order_container2 {
+    border-style: solid;
+    width: 100%;
+    word-break: break-all;
+    
+}
+
+.order_header2 {
+    text-align: left;
+    background-color:green;
+    color: white;
+    height: 30px;
+}
+
+
+.order_container3 {
+    border-style: solid;
+    width: 100%;
+    word-break: break-all;
+    
+}
+
+.order_header3 {
+    text-align: left;
+    background-color: green;
+    color: white;
+    height: 30px;
+}
+
+.marg {
+    padding-left: 15px;
+  }
+
+  .divTextL {
+    text-align: left;
+  }
+  .divTextR {
+    text-align: right;
+  }
+  .divTextC {
+    text-align: center;
+  }
+
+  .hide_div{
+    visibility: hidden;
+  }

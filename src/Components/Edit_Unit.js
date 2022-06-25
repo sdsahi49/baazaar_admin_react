@@ -9,11 +9,15 @@ import Header from './Header';
 import Footer from './Footer';
 import Scrolltop from './Scrolltop';
 
-const Add_Unit=() =>{
+const Edit_Unit=() =>{
 
  //My Tempcode start
  let history = useHistory();
  //My Tempcode end
+
+ const search = window.location.search;
+ const params = new URLSearchParams(search);
+ const id = params.get('id');
   
 
  const [mgs,setMsg]=useState(null)
@@ -25,6 +29,40 @@ const [use_data,setData]=useState({
     is_popular:"",
     status:""
 });
+
+useEffect(()=>{
+    load_Data();
+},[] );
+
+
+const load_Data= async()=>{
+
+    axios.post('http://localhost:8000/unit_type/unit_type_on_id',{id:id},{
+    
+        headers: {
+            "Authorization":"Bearer "+ Cookies.get('token') 
+        }   
+   } )
+     .then(result =>{
+     
+      if(result.status===200)
+      {        
+        setData(result.data.data[0]);
+      }
+      else if(result.status===404)
+      {
+       setMsg(result.data.message)
+      }
+
+    
+     } )
+     .catch(error =>{
+       console.log(error)
+   
+     } )
+
+
+  }
 
 const{singular_unit,plural_unit,front_singular_unit,front_plural_unit,is_popular,status}=use_data;
 const onInputChange=e=>{
@@ -51,7 +89,9 @@ const onSubmit =  e => {
    }
    else{
 
-     axios.post('http://localhost:8000/unit_type/add_unit_type',{singular_unit:use_data.singular_unit,plural_unit:use_data.plural_unit,front_singular_unit:use_data.front_singular_unit,front_plural_unit:use_data.front_plural_unit,is_popular:use_data.is_popular,status:use_data.status},{
+    
+
+     axios.post('http://localhost:8000/unit_type/update_unit_type',{id:id,singular_unit:use_data.singular_unit,plural_unit:use_data.plural_unit,front_singular_unit:use_data.front_singular_unit,front_plural_unit:use_data.front_plural_unit,is_popular:use_data.is_popular,status:use_data.status},{
         headers: {
             "Authorization":"Bearer "+ Cookies.get('token') 
         }                
@@ -61,19 +101,10 @@ const onSubmit =  e => {
        if(result.status===200)
        {        
         
-        alert(result.data.message);
+        history.push("/unit_list")
 
-        setData({
-            singular_unit:"",
-            plural_unit:"",
-            front_singular_unit:"",
-            front_plural_unit:"",
-            is_popular:"Yes",
-            status:"Active"
-           
-        });
        }
-       else 
+       else if(result.status===404)
        {
         alert(result.data.message);
 
@@ -96,15 +127,7 @@ const onSubmit =  e => {
 
  const Cancel =(e) =>{
     e.preventDefault();
-    setData({
-        singular_unit:"",
-        plural_unit:"",
-        front_singular_unit:"",
-        front_plural_unit:"",
-        is_popular:"Yes",
-        status:"Active"
-       
-    });
+    history.push("/unit_list")
   }	
             
         
@@ -125,7 +148,7 @@ return(
    <div className="toolbar" id="kt_toolbar">					
 		<div id="kt_toolbar_container" className="container-fluid d-flex flex-stack">	
 			<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" classNameName="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">						
-				<h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Add Unit						
+				<h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Edit Unit						
 				 {/* <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1"></span>					
 				 <span className="text-muted fs-7 fw-bold mt-2">#</span> */}
 			   </h1>					
@@ -199,11 +222,12 @@ return(
                                                                         <span >Is Popular?</span>
                                                                     </label>               
                                                                     <div className="w-100">
-                                                                        <div className="form-floating border rounded">                 
+                                                                        <div className="form-floating border rounded">   
+                                                                       
                                                                             <select  className="form-select form-select-solid lh-1 py-3" name="is_popular" value={is_popular}  onChange={e=>onInputChange(e)} >    
-                                                                                <option value="Yes">Yes</option>
-                                                                                <option value="No">No</option>
-                                                                        </select>                          
+                                                                                <option value="Yes" >Yes</option>
+                                                                                <option value="No" >No</option>
+                                                                        </select>                           
                                                                         </div>
                                                                     </div>
                                                               </div>  
@@ -229,7 +253,7 @@ return(
 													<div className="separator mb-6"></div>		
 													<div className="d-flex justify-content-end">		
 														<button   className="btn btn-light me-3" onClick={Cancel}>Cancel</button>	
-														<button   className="btn btn-primary">Save</button>
+														<button   className="btn btn-primary">Update</button>
 															
 													</div>										
 												</form>			
@@ -257,4 +281,4 @@ return(
 )
     
 }
-export default Add_Unit;
+export default Edit_Unit;

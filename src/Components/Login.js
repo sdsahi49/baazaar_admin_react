@@ -1,12 +1,16 @@
 import React,{useState,useEffect} from "react";
 import ReactDOM from 'react-dom';
-import {Link, useHistory,useParams } from "react-router-dom";
+import {Link, useHistory,useParams} from "react-router-dom";
+
+
 
 import axios from "axios";
 import Cookies from 'js-cookie';
 
 
 const Login=() =>{
+
+	
 
 	function createCookie(name,value,minutes) {
 		if (minutes) {
@@ -58,7 +62,8 @@ const Login=() =>{
 			 localStorage.setItem('userName',result.data.Name);	 
 			 createCookie("token", result.data.Token, 60)  //1 hour
 			 createCookie("adminId", result.data.AdminId, 60)  //1 hour
-			 history.push("/dashboard")	 
+			 history.push("/dashboard")	
+			
 		  }
 		  else
 		  {

@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Link, useHistory,useParams } from "react-router-dom";
 import Aside from './Aside';
 import Header from './Header';
 import Footer from './Footer';
 import Scrolltop from './Scrolltop';
 
 
-const Dashboard=() =>{
-return(
-<>
 
+const Dashboard=() =>{
+	let history = useHistory();
+	 
+return(
+	
+<>
 <body id="kt_body" className="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed">
       <div className="d-flex flex-column flex-root ">
 			<div className="page d-flex flex-row flex-column-fluid">

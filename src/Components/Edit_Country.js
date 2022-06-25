@@ -9,49 +9,72 @@ import Header from './Header';
 import Footer from './Footer';
 import Scrolltop from './Scrolltop';
 
-const Add_Unit=() =>{
+const Edit_Country=() =>{
 
  //My Tempcode start
  let history = useHistory();
  //My Tempcode end
-  
+ const search = window.location.search;
+ const params = new URLSearchParams(search);
+ const id = params.get('id');
 
- const [mgs,setMsg]=useState(null)
+const [mgs,setMsg]=useState(null)
 const [use_data,setData]=useState({
-    singular_unit:"",
-    plural_unit:"",
-    front_singular_unit:"",
-    front_plural_unit:"",
+    country_name:"",
+    // country_flag_img:"",  
     is_popular:"",
     status:""
 });
 
-const{singular_unit,plural_unit,front_singular_unit,front_plural_unit,is_popular,status}=use_data;
+const{country_name,is_popular,status}=use_data;
 const onInputChange=e=>{
 setData({...use_data,[e.target.name]:e.target.value})
 };
 
+useEffect(()=>{
+    load_Data();
+},[] );
+
+
+const load_Data= async()=>{
+
+    axios.post('http://localhost:8000/country/country_on_id',{id:id},{
+        headers: {
+            "Authorization":"Bearer "+ Cookies.get('token') 
+        }   
+   } )
+     .then(result =>{
+     
+      if(result.status===200)
+      {        
+        setData(result.data.data[0]);
+      }
+      else if(result.status===404)
+      {
+       setMsg(result.data.message)
+      }
+
+    
+     } )
+     .catch(error =>{
+       console.log(error)
+   
+     } )
+
+
+  }
+
+
 const onSubmit =  e => {
     e.preventDefault();
 
-    if(use_data.singular_unit.trim()===""){
-     alert("Singular Unit is Required");   
+    if(use_data.country_name.trim()===""){
+     alert("Country name is Required");   
    }
-   else if(use_data.plural_unit.trim()==="")
-   {
-     alert("Plural Unit is Required");
-   }
-   else if(use_data.front_singular_unit.trim()==="")
-   {
-     alert("Front Singular Unit is Required");
-   }
-   else if(use_data.front_plural_unit.trim()==="")
-   {
-     alert("Front Plural Unit is Required");
-   }
+   
    else{
 
-     axios.post('http://localhost:8000/unit_type/add_unit_type',{singular_unit:use_data.singular_unit,plural_unit:use_data.plural_unit,front_singular_unit:use_data.front_singular_unit,front_plural_unit:use_data.front_plural_unit,is_popular:use_data.is_popular,status:use_data.status},{
+     axios.post('http://localhost:8000/country/update_country',{id:id,country_name:use_data.country_name,is_popular:use_data.is_popular,status:use_data.status},{
         headers: {
             "Authorization":"Bearer "+ Cookies.get('token') 
         }                
@@ -61,17 +84,7 @@ const onSubmit =  e => {
        if(result.status===200)
        {        
         
-        alert(result.data.message);
-
-        setData({
-            singular_unit:"",
-            plural_unit:"",
-            front_singular_unit:"",
-            front_plural_unit:"",
-            is_popular:"Yes",
-            status:"Active"
-           
-        });
+        history.push("/country_list")
        }
        else 
        {
@@ -96,15 +109,7 @@ const onSubmit =  e => {
 
  const Cancel =(e) =>{
     e.preventDefault();
-    setData({
-        singular_unit:"",
-        plural_unit:"",
-        front_singular_unit:"",
-        front_plural_unit:"",
-        is_popular:"Yes",
-        status:"Active"
-       
-    });
+    history.push("/country_list")
   }	
             
         
@@ -125,7 +130,7 @@ return(
    <div className="toolbar" id="kt_toolbar">					
 		<div id="kt_toolbar_container" className="container-fluid d-flex flex-stack">	
 			<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" classNameName="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">						
-				<h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Add Unit						
+				<h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">Edit Country						
 				 {/* <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1"></span>					
 				 <span className="text-muted fs-7 fw-bold mt-2">#</span> */}
 			   </h1>					
@@ -155,43 +160,23 @@ return(
                                                     <div className="col">  
                                                         <div className="fv-row mb-7">   
                                                             <label className="fs-6 fw-bold form-label mt-3">
-                                                                <span className="required">Singular Unit</span>	
+                                                                <span className="required">Country Name</span>	
                                                             </label>
-                                                            <input type="text" className="form-control form-control-solid" name="singular_unit" value={singular_unit}  onChange={e=>onInputChange(e)} />
+                                                            <input type="text" className="form-control form-control-solid" name="country_name" value={country_name}  onChange={e=>onInputChange(e)} />
                                                         </div>
                                                     </div>
                                                     
                                                     <div className="col">					
 															<div className="fv-row mb-7">					
 																<label className="fs-6 fw-bold form-label mt-3">
-																	<span className="required">Plural Unit</span>	
+																	<span className="required">Image</span>	
 																</label>		
-																<input type="text" className="form-control form-control-solid" name="plural_unit" value={plural_unit}  onChange={e=>onInputChange(e)} />		
+																<input type="file" className="form-control" name="country_flag_img" />		
 															</div>	
 													</div>                   
                                                 </div>
 
                                              		
-													<div className="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
-														<div className="col">	
-															<div className="fv-row mb-7">				
-																<label className="fs-6 fw-bold form-label mt-3">
-																	<span className="required">Front Singular Unit</span>	
-																</label>	
-																<input type="text" className="form-control form-control-solid" name="front_singular_unit" value={front_singular_unit}  onChange={e=>onInputChange(e)} />		
-															</div>				
-														</div>
-														
-														<div className="col">	
-															<div className="fv-row mb-7">				
-																<label className="fs-6 fw-bold form-label mt-3">
-																	<span className="required">Front Plural Unit</span>	
-																</label>	
-																<input type="text" className="form-control form-control-solid" name="front_plural_unit" value={front_plural_unit}  onChange={e=>onInputChange(e)} />	
-															</div>
-														</div>	
-													</div>
-
                                                     <div className="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">	
                                                     <div className="col"> 
                                                                 <div className="fv-row mb-7">                       
@@ -229,7 +214,7 @@ return(
 													<div className="separator mb-6"></div>		
 													<div className="d-flex justify-content-end">		
 														<button   className="btn btn-light me-3" onClick={Cancel}>Cancel</button>	
-														<button   className="btn btn-primary">Save</button>
+														<button   className="btn btn-primary">Update</button>
 															
 													</div>										
 												</form>			
@@ -257,4 +242,4 @@ return(
 )
     
 }
-export default Add_Unit;
+export default Edit_Country;

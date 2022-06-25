@@ -11,7 +11,8 @@ return(
 					<div className="aside-logo flex-column-auto" id="kt_aside_logo">
 						
 						<a href="/dashboard">
-							<img alt="Logo" src="assets/media/logos/logo-1-dark.svg" className="h-25px logo" />
+							{/* <img alt="Logo" src="assets/media/logos/logo-1-dark.svg" className="h-25px logo" /> */}
+							<img alt="Logo" src="assets/media/logos/logo-2-dark.png" className="h-25px logo" />
 						</a>
 						
 						<div id="kt_aside_toggle" className="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
@@ -427,7 +428,7 @@ return(
 
 
 								<div className="menu-item">
-									<a className="menu-link" href="/order_list" title="Build your layout and export HTML for server side integration" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+									<a className="menu-link" href="/order_list"  data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 										<span className="menu-icon">
 											
 										<span className="svg-icon svg-icon-2">
