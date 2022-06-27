@@ -75,11 +75,78 @@ const search = window.location.search;
 
   const[delivery_mode,setDelivery_Mode]=useState(null)
 
-
-
-
   const[st_add,setSt_Add]=useState(null)
   const [ord,setOrdDet]=useState([]);
+
+
+
+  const [use_data,setData]=useState({
+    status:"",
+    password:""
+});
+
+
+const{status,password}=use_data;
+const onInputChange=e=>{
+setData({...use_data,[e.target.name]:e.target.value})
+
+};
+
+const onSubmit =  e => {
+  e.preventDefault();
+
+  if(use_data.status==="")
+  {
+    alert("Please select status");
+  }
+  else if(use_data.password==="")
+  {
+    alert("Password is Required");
+  }
+  else
+  {
+    axios.post('http://localhost:8000/order/update_os',{id:id,order_status:use_data.status,password:use_data.password},{
+      headers: {
+        "Authorization":"Bearer "+ Cookies.get('token') 
+      }    
+     
+    } )
+     .then(result =>{
+     
+      if(result.status==200)
+      {
+       
+         setData({
+          status:"",
+          password:""
+         
+      });
+    
+        load_Data();
+        load_Ord_Det();
+        alert(result.data.message)
+        history.push("/order_details?id="+id)
+      }
+      else{
+        alert(result.data.message)
+      }
+         
+     
+     } )
+     .catch(error =>{
+    console.log(error) 
+     } )
+
+     load_Data();
+     load_Ord_Det();
+
+     
+  }
+
+
+};
+
+
  
 
 const load_Data= async()=>{
@@ -139,6 +206,7 @@ const load_Data= async()=>{
          setDelivery_Mode(result.data.data[0].delivery_mode)
 
          setSt_Add(result.data.data[0].st_add)
+
 
       }
       else if(result.status===404)
@@ -231,6 +299,13 @@ const load_Data= async()=>{
    }
 
   }	  
+
+
+  
+
+
+
+
   
 			
 return(
@@ -542,6 +617,45 @@ return(
 
 
           </div>
+
+<br></br>
+<form className="form w-100"  onSubmit={e =>onSubmit(e)}>
+          <div class="order_container2">
+            <div class="order_header2">
+            &nbsp;For Admin use only
+            </div>
+                  
+        <div className="col-md-12">  
+        <br></br>
+        &nbsp;<b>Order Status: </b><select name="status"  value={status}  onChange={e=>onInputChange(e)}>
+                         <option value="">Select Status</option>
+                         <option value="Pending">Pending</option>
+                         <option value="On Hold">On Hold</option>
+                         <option value="Accepted">Accepted</option>
+                         <option value="Rejected">Rejected</option>
+                         <option value="Delivered">Delivered</option>
+             </select>
+         </div>
+         <br></br>
+         <div className="col-md-12">  
+         &nbsp;<b>Password: </b><input type="password" name="password"  value={password}  onChange={e=>onInputChange(e)}/>
+         </div>
+         <div className="col-md-12">  
+               <hr></hr>
+         </div>
+         <div className="col-md-12">  
+        
+         &nbsp;<button   >Update</button>
+        
+         </div>
+         <br></br>
+         
+
+
+          </div>
+</form>
+
+
           <br></br>
 
           </div>
@@ -595,16 +709,16 @@ return(
                   <table  id="2">
 															
 													<tbody >
-                                                        {ord.map((item, i) => (
+                              {ord.map((item, i) => (
 															<tr>		 
 																<td>
-                                                                {i+1}) {item.product_name} x {item.qty}
+                                 {i+1}) {item.product_name} x {item.qty}
 																</td>
 															</tr>
 															  ))}
 														</tbody>
 													
-				 </table>
+			             	 </table>
                 
                </div>
 

@@ -11,13 +11,17 @@ import Scrolltop from './Scrolltop';
 
 import "./style.css";
 
+import { MDBDataTable } from 'mdbreact';
 
-// setTimeout(function(){
-//     window.location.reload();
-//  }, 30000);
+
+
 
 
 const Orders=() =>{
+
+	setTimeout(function(){
+    window.location.reload();
+ }, 30000);
 
     let history = useHistory();
 
@@ -118,6 +122,9 @@ const [mgs,setMsg]=useState(null)
 			//  }
 			
 			// };
+
+		
+
 			
 return(
 <>
@@ -185,11 +192,12 @@ return(
 									<br></br>
 									<div className="card-body pt-0">
 									
-									<table className="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">					
+									<table className="table align-middle table-row-dashed fs-6 gy-5">					
 											<thead>
 												<tr className="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">		
 													<th >Order No</th>
 													<th >Store Name</th>
+													<th >User Name</th>
                                                     <th >Customer Name</th>
 													<th >Placed at</th>
 													<th >Order Status</th>
@@ -213,6 +221,9 @@ return(
 													</td>
                                                     <td className="td_set">
 														<a href="#" className="text-gray-800 text-hover-primary fs-5 fw-bolder">{item.store_name}</a>				
+													</td>	
+													<td className="td_set">
+														<a href="#" className="text-gray-800 text-hover-primary fs-5 fw-bolder">{item.user_name}</a>				
 													</td>			
 													<td>
 														<a href="#" className="text-gray-800 text-hover-primary fs-5 fw-bolder">{item.customer_name}</a>				
@@ -253,7 +264,12 @@ return(
 										</table>
 
 
-
+										{/* <MDBDataTable
+      striped
+      bordered
+      small
+      data={setOrder}
+    /> */}
 
 									
 										
