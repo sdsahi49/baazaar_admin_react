@@ -21,7 +21,7 @@ const Orders=() =>{
 
 	setTimeout(function(){
     window.location.reload();
- }, 30000);
+ }, 60000);
 
     let history = useHistory();
 

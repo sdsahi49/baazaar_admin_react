@@ -16,9 +16,13 @@ import Scrolltop from './Scrolltop';
 import "./style.css";
 
 
-
 const ref = React.createRef();
+
 const Order_Details=() =>{
+
+  setTimeout(function(){
+    window.location.reload();
+ }, 60000);
 
 let history = useHistory();
 
