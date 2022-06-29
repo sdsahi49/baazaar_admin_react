@@ -11,8 +11,7 @@ import Scrolltop from './Scrolltop';
 
 import "./style.css";
 
-import { MDBDataTable } from 'mdbreact';
-
+import ReactToExcel from 'react-html-table-to-excel';
 
 
 
@@ -162,9 +161,9 @@ return(
       
      {/* begin::Products */}
 		<div className="card card-flush">								
-		  {/* <div className="card-header align-items-center py-5 gap-2 gap-md-5">
-					
-				<form onSubmit={e =>onSubmit(e)}>
+		  <div className="card-header align-items-center py-5 gap-2 gap-md-5">
+		  <ReactToExcel table="tblorder" filename="order" sheet="sheet1" buttonText="Export to Excel" className="btnCancel"/>
+				{/* <form onSubmit={e =>onSubmit(e)}>
                    <div className="row">
                     <div className="col-md-4">
                      <label><b>From Date</b> <span>*</span></label>
@@ -186,13 +185,15 @@ return(
                     </div>
 
                     </div>  
-              </form>
+              </form> */}
 												
-		</div> */}
-									<br></br>
+		</div> 
+		 
+
+									{/* <br></br> */}
 									<div className="card-body pt-0">
 									
-									<table className="table align-middle table-row-dashed fs-6 gy-5">					
+									<table className="table align-middle table-row-dashed fs-6 gy-5" id="tblorder">					
 											<thead>
 												<tr className="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">		
 													<th >Order No</th>

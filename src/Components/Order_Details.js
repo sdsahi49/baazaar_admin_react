@@ -1,8 +1,5 @@
 import React,{useState,useEffect} from "react";
-
 import ReactTOPdf from "react-to-pdf";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-
 import {Link, useHistory } from "react-router-dom";
 import ReactDOM from 'react-dom';
 import axios from "axios";
@@ -14,6 +11,9 @@ import Footer from './Footer';
 import Scrolltop from './Scrolltop';
 
 import "./style.css";
+
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
 
 
 const ref = React.createRef();
@@ -82,7 +82,10 @@ const search = window.location.search;
   const[st_add,setSt_Add]=useState(null)
   const [ord,setOrdDet]=useState([]);
 
+  const [s_price,setS_Price]=useState([]);
 
+  const [de_ta,setDe_Ta]=useState([]);
+  
 
   const [use_data,setData]=useState({
     status:"",
@@ -211,6 +214,8 @@ const load_Data= async()=>{
 
          setSt_Add(result.data.data[0].st_add)
 
+         setS_Price(result.data.data[0].s_price)
+
 
       }
       else if(result.status===404)
@@ -305,14 +310,9 @@ const load_Data= async()=>{
   }	  
 
 
-  
-
-
-
-
-  
-			
+  		
 return(
+  
 <>
 
 <body id="kt_body" className="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed">
@@ -435,17 +435,17 @@ return(
 															<tr className="fw-bolder text-muted">
 															
 																<th className="min-w-200px">Product/Service</th>
-																<th className="min-w-150px">MRP</th>
+																{/* <th className="min-w-150px">MRP</th> */}
 																<th className="min-w-150px">SP</th>
-                                                                <th className="min-w-150px">Qty</th>
-                                                                <th className="min-w-150px">Discount</th>
-                                                                <th className="min-w-150px">Total Amt</th>
+                                <th className="min-w-150px">Qty</th>
+                                {/* <th className="min-w-150px">Discount</th> */}
+                                <th className="min-w-150px">Total Amt</th>
 																
 															</tr>
 														</thead>
 														
 														<tbody>
-                                                        {ord.map((item, i) => (
+                             {ord.map((item, i) => (
 															<tr>
 																
 																<td>
@@ -460,26 +460,24 @@ return(
 																	</div>
 																</td>
 
-                                                                <td className="text-end">
+                               {/* <td className="text-end">
 																	<div className="d-flex flex-column w-100 me-2">
 																		<div className="d-flex flex-stack mb-2">
 																			<span className="text-muted me-2 fs-7 fw-bold">₹0</span>
 																		</div>
 																		
 																	</div>
-																</td>
-
-
+																</td> */}
 
 																<td className="text-end">
 																	<div className="d-flex flex-column w-100 me-2">
 																		<div className="d-flex flex-stack mb-2">
-																			<span className="text-muted me-2 fs-7 fw-bold">₹{item.price}</span>
+																			<span className="text-muted me-2 fs-7 fw-bold">₹{item.s_price}</span>
 																		</div>
 																		
 																	</div>
 																</td>
-                                                                <td className="text-end">
+                              <td className="text-end">
 																	<div className="d-flex flex-column w-100 me-2">
 																		<div className="d-flex flex-stack mb-2">
 																			<span className="text-muted me-2 fs-7 fw-bold">{item.qty}</span>
@@ -487,18 +485,19 @@ return(
 																		
 																	</div>
 																</td>
-                                                                <td className="text-end">
+                              {/* <td className="text-end">
 																	<div className="d-flex flex-column w-100 me-2">
 																		<div className="d-flex flex-stack mb-2">
 																			<span className="text-muted me-2 fs-7 fw-bold">NA</span>
 																		</div>
 																		
 																	</div>
-																</td>
-                                                                <td className="text-end">
+																</td> */}
+                               <td className="text-end">
 																	<div className="d-flex flex-column w-100 me-2">
 																		<div className="d-flex flex-stack mb-2">
-																			<span className="text-muted me-2 fs-7 fw-bold">₹{item.final_amount}</span>
+																			{/* <span className="text-muted me-2 fs-7 fw-bold">₹{item.final_amount}</span> */}
+                                      <span className="text-muted me-2 fs-7 fw-bold">₹{item.price}</span>
 																		</div>
 																		
 																	</div>
@@ -608,7 +607,7 @@ return(
                <b>&nbsp;Taxes & Charges   :</b>   ₹{total_gst_amount}  
          </div>
          <div className="col-md-12">  
-               <b>&nbsp;Coupon Discound   :</b>   ₹{coupon_amount}  
+               <b>&nbsp;Coupon Discount   :</b>   ₹{coupon_amount}  
          </div>
          <div className="col-md-12">  
                <hr></hr>
@@ -702,9 +701,24 @@ return(
                    <b>Customer Geo Location:   </b> <a target="_blank" href={customer_geo_location_address}>{customer_geo_location_address}</a>
                   
                    <br></br>
-                   <b>Amount Receivable:   </b> ₹{final_amount}
+                  
+
+                   {payment_method === 'Online' ? 
+                   (
+                   <span ></span>
+                   ) 
+                   : 
+                   (
+                   <span ><b>Collect cash:   </b> ₹{final_amount}</span>
+                   )
+                   }
+
+
+
+
                    </tr>
                    <tr>
+
                    <br></br>
                    </tr>
                  
@@ -735,7 +749,7 @@ return(
             </button>
           }
         </ReactTOPdf> */}
-       
+    
         <br></br>
         &nbsp;
        

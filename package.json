@@ -9,14 +9,16 @@
     "axios": "^0.27.2",
     "clipboard": "^2.0.11",
     "js-cookie": "^3.0.1",
-    "mdbreact": "^5.2.0",
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
     "react-copy-to-clipboard": "^5.1.0",
+    "react-data-table-component": "^7.5.2",
     "react-dom": "^17.0.2",
+    "react-html-table-to-excel": "^2.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",
     "react-to-pdf": "0.0.14",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

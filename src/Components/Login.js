@@ -15,7 +15,7 @@ const Login=() =>{
 	function createCookie(name,value,minutes) {
 		if (minutes) {
 			var date = new Date();
-			date.setTime(date.getTime()+(minutes*60*1000));
+			date.setTime(date.getTime()+(minutes*120*1000));
 			var expires = "; expires="+date.toGMTString();
 		} else {
 			var expires = "";
@@ -60,8 +60,8 @@ const Login=() =>{
 		  if(result.status===200)
 		  {	
 			 localStorage.setItem('userName',result.data.Name);	 
-			 createCookie("token", result.data.Token, 60)  //1 hour
-			 createCookie("adminId", result.data.AdminId, 60)  //1 hour
+			 createCookie("token", result.data.Token, 120)  //2 hour
+			 createCookie("adminId", result.data.AdminId, 120)  //2 hour
 			 history.push("/dashboard")	
 			
 		  }
