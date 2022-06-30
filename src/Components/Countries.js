@@ -8,6 +8,20 @@ import Header from './Header';
 import Footer from './Footer';
 import Scrolltop from './Scrolltop';
 
+//Bootstrap and jQuery libraries
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import "datatables.net-buttons/js/dataTables.buttons.js"
+import "datatables.net-buttons/js/buttons.colVis.js"
+import "datatables.net-buttons/js/buttons.flash.js"
+import "datatables.net-buttons/js/buttons.html5.js"
+import "datatables.net-buttons/js/buttons.print.js"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import $ from 'jquery'; 
+
 const Countries=() =>{
 
  //My Tempcode start
@@ -73,7 +87,27 @@ const [mgs,setMsg]=useState(null)
               }
 
 
-		
+			  $(document).ready(function () {
+				setTimeout(function(){
+					
+					if (! $.fn.dataTable.isDataTable( '#country' ) ) {
+						$('#country').DataTable(
+						{
+							  pagingType: 'full_numbers',
+							  pageLength: 10,
+							  processing: true,
+							  dom: 'Bfrtip',
+								  buttons: ['csv', 'print'
+								  ]
+						}
+					);
+				
+					}
+					} ,
+					1000
+					);
+				});
+				
 	
 return(
 <>
@@ -119,7 +153,7 @@ return(
                   									
 				</div>		
 									<div className="card-body pt-0">
-									<table className="table align-middle table-row-dashed fs-6 gy-5">					
+									<table className="table align-middle table-row-dashed fs-6 gy-5" id="country">					
 											<thead>
 												<tr className="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">		
                                                 <th>Sr No</th>
