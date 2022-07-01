@@ -11,30 +11,36 @@ import Scrolltop from './Scrolltop';
 
 
 
-
-
 const Vendors=() =>{
 
  //My Tempcode start
  let history = useHistory();
  //My Tempcode end
 
-const [units,setUnits]=useState([]);
+const [vndrs,setVndrs]=useState([]);
 const [mgs,setMsg]=useState(null)
 
+const [use_data,setData]=useState({
+    store_name:"",
+    
+   
+});
+
+const{store_name}=use_data;
+const onInputChange=e=>{
+setData({...use_data,[e.target.name]:e.target.value})
+};
 
 
+			const load_Vendors=async()=>{
 
-		
-			const load_Units=async()=>{
-
-				axios.get('http://localhost:8000/unit_type/unit_type_list',{
+				axios.get('http://localhost:8000/store/store_list',{
 				  headers: {
 					"Authorization":"Bearer "+ Cookies.get('token') 
 				}       
 			  } 
 				).then(result => { 
-                    setUnits(result.data.data);
+                    setVndrs(result.data.data);
 					
 				})
 				.catch(error =>{
@@ -44,43 +50,66 @@ const [mgs,setMsg]=useState(null)
 			
 			  }		
 			   
-			const deleteUnit=async id =>{
-				
-			var result = window.confirm("Want to delete?");
-             if (result) {
-				
-				 axios.post('http://localhost:8000/unit_type/delete_unit_type',{id:id},{
-						headers: {
-							"Authorization":"Bearer "+ Cookies.get('token') 
-						}    
-					 
-				  } )
-				   .then(result =>{
-					 
-					  //alert(result.data.message)
-				   
-				   } )
-				   .catch(error =>{
-					console.log(error) 
-				   } )
-
-}
-				  
-				   load_Units();	  
-				  }
-
-  
-              const addNew =() =>{
-                history.push("/add_unit")
-              }
-
-
-		
-			  useEffect(()=>{
-				load_Units();
-				},[] );
 	
+			  useEffect(()=>{
+				load_Vendors();
+				},[] );
+
+
+				function handleClick(e) {
+					e.preventDefault();
+					setData({
+						store_name:"",
+			
+					   
+					});
+					load_Vendors();
 				
+				  }
+				
+				  
+				
+				const onSubmit =  e => {
+				  e.preventDefault();
+				
+				
+				  if(use_data.store_name===""){
+				   alert("Store is Required");   
+				 }
+				
+				 else{
+				
+				   axios.post('http://localhost:8000/store/store_list_by_store_name',{store_name:use_data.store_name},{ 
+					headers: {
+					  "Authorization":"Bearer "+ Cookies.get('token')   
+				  } 
+					 
+				} )
+				  .then(result =>{
+				  
+				   if(result.status===200)
+				   {        
+					setVndrs(result.data.data);
+				   }
+				   else if(result.status===404)
+				   {
+					setMsg(result.data.message)
+				   
+				   }
+					
+				
+				  } )
+				  .catch(error =>{
+					console.log(error)
+				
+				  } )
+				
+				
+				 }
+				
+				};
+	
+
 
 return(
 <>
@@ -119,81 +148,76 @@ return(
      {/* begin::Products */}
 		<div className="card card-flush">								
 		  <div className="card-header align-items-center py-5 gap-2 gap-md-5">
-					
+		  <form onSubmit={e =>onSubmit(e)}>
+                   <div className="row">
+                    <div className="col-md-6">
+                     <label><b>Store Name</b> <span>*</span></label>
+                     <input className="form-control form-control-solid" name="store_name" value={store_name}  onChange={e=>onInputChange(e)} placeholder="Search by store"   />    
+                    </div>
+                    
+                    <div className="col-md-6">       
+                       <br></br>
+                     <button className="btn btn-sm btn-primary me-2" >Search</button>
+                      &nbsp;
+                     <button className="btn btn-sm btn-light" onClick={handleClick}>Reset</button> 
+					  &nbsp;
+					 <spam>{mgs}</spam>             
+                    </div>
+
+                    </div>  
+              </form>
          
-          <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-          <button className="btn btn-sm btn-light"  onClick={addNew}>Add New</button> 
-          </div>
-                  
-             
-												
+        									
 				</div>
 									
 									<div className="card-body pt-0">
 									
-									<table className="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">					
+									<table className="table align-middle table-row-dashed fs-6 gy-5">					
 											<thead>
 												<tr className="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">		
                                                 <th>Sr No</th>
-                                                <th>Singular Unit</th>
-                                                <th>Plural Unit</th>
-                                                <th>Front Singular Unit</th>
-                                                <th>Front Plural Unit</th>
+												<th>Logo</th>
+                                                <th>Store Name</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Markt Place Status</th>
+                                                <th>Status</th>
+                                                {/* <th>Action</th> */}
 												</tr>	
 											</thead>
 											
 											<tbody className="fw-bold text-gray-600" >
 											
-										
-
-											 {units.map((item, i) => (
+									
+											 {vndrs.map((item, i) => (
 											 
 												<tr >	
 							                         <td>{i+1}</td>
-													
+													 <td>
+                                                     <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
+																<a href="#">
+																	<div className="symbol-label">
+																		<img src={item.logo_img} className="w-100" />
+																	</div>
+																</a>
+															</div>
+
+                                                    </td>
 													<td >
-                                                    {item.singular_unit}
+                                                    {item.store_name}
 													</td>		
 													<td>
-													{item.plural_unit}			
+													{item.status}			
 													</td>	
 													<td >
-														{item.front_singular_unit}		
+														{item.m_p_s}		
 													</td>
 	
-													<td >
-														{item.front_plural_unit}
-													</td>
-													
-													<td >
-														{item.status}
-													</td>
+													<td>  
+                                                        {/* <Link to={'/vendor_order_list?user_id='+item.user_id}><i class="fa fa-eye" aria-hidden="true"></i> </Link> */}
 
-                                                    <td>
-													<Link className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" to={'/edit_unit?id='+item.id}>
-													<span className="svg-icon svg-icon-3">
-																				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																					<path opacity="0.3" d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z" fill="black" />
-																					<path d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z" fill="black" />
-																				</svg>
-																			</span>
-													</Link>
-         
-				  
-                                                       &nbsp;&nbsp;
-                                                       <Link className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" onClick={()=>deleteUnit(item.id)}>
-													   <span className="svg-icon svg-icon-3">
-																				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																					<path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
-																					<path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
-																					<path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
-																				</svg>
-																			</span>
-													   </Link>
+														<Link to={'/vendor_order_list?user_id='+item.user_id+"/"+item.store_name}><i class="fa fa-eye" aria-hidden="true"></i></Link>
+                                                           
                                                      </td>
-													
 													
 												</tr>
 											 ))} 
@@ -202,26 +226,6 @@ return(
 												
 										</table>
 
-										{/* <DataTable 
-										
-										columns={columns} 
-										data={f_units} 
-										pagination 
-										fixedHeader 
-										fixedHeaderScrollHeight="450px"
-										selectableRows
-										selectableRowsHighlight
-										highlightOnHover
-										subHeader
-										subHeaderComponent={
-											<input type="text" placeholder="search" className="w-25 form-control" value={search} onChange={(e)=>setSearch(e.target.value)}/>
-										}
-										subHeaderAlign="left"
-
-									
-										/> */}
-
-				
 									</div>
 									
 		</div>

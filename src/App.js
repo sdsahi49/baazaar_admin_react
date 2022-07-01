@@ -18,8 +18,9 @@ import Add_Country from './Components/Add_Country';
 import Edit_Country from './Components/Edit_Country';
 import Orders from './Components/Orders';
 import Order_Details from './Components/Order_Details';
-
 import Vendors from './Components/Vendors';
+
+import Vendor_Order_List from './Components/Vendor_Order_List';
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -47,6 +48,8 @@ import ProtectedRoute from "./ProtectedRoute";
     <ProtectedRoute exact path="/order_list" component={Orders}/>
     <ProtectedRoute exact path="/order_details" component={Order_Details}/>
     <ProtectedRoute exact path="/vendor_list" component={Vendors}/>
+
+    <ProtectedRoute exact path="/vendor_order_list" component={Vendor_Order_List}/>
     
   </Switch>
 </Router>
